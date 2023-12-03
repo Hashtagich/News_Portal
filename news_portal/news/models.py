@@ -1,12 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import Sum
+from django.db.models.functions import Coalesce
 
 
 # Create your models here.
 
 class Author(models.Model):
-    rating_user = models.IntegerField(default=0)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    rating = models.IntegerField(default=0)
 
     def update_rating(self):
         """Метод, который обновляет рейтинг пользователя, переданный в аргумент этого метода.
@@ -14,10 +16,11 @@ class Author(models.Model):
         суммарный рейтинг каждой статьи автора умножается на 3;
         суммарный рейтинг всех комментариев автора;
         суммарный рейтинг всех комментариев к статьям автора."""
-        res1 = 0  # суммарный рейтинг каждой статьи автора умножается на 3;
-        res2 = 0  # суммарный рейтинг всех комментариев автора;
-        res3 = 0  # суммарный рейтинг всех комментариев к статьям автора.
-        self.rating_user += sum((res1, res2, res3))
+        post_rating = Post.objects.filter(author=self).aggregate(pr=Coalesce(Sum('rating'), 0))['pr']
+        comment_rating = Comment.objects.filter(user=self.user).aggregate(cr=Coalesce(Sum('rating'), 0))['cr']
+        post_comment_rating = Comment.objects.filter(post__author=self).aggregate(pcr=Coalesce(Sum('rating'), 0))['pcr']
+
+        self.rating += post_rating * 3 + comment_rating + post_comment_rating
         self.save()
 
 
@@ -26,38 +29,42 @@ class Category(models.Model):
 
 
 class Post(models.Model):
+    article = 'AR'
+    news = 'NE'
+
     POSITIONS = [
-        ('sport', 'спорт'),
-        ('politics', 'политика'),
-        ('education', 'образование ')
+        (article, 'Статья'),
+        (news, 'Новости'),
     ]
 
-    choose_news = models.CharField(max_length=255, choices=POSITIONS)
-    datetime_post = models.DateTimeField(auto_now_add=True)
-    title_news = models.CharField(max_length=255, default='Заголовок статьи/новости')
-    text_news = models.TextField(ddefault='Текст статьи/новости')
-    rating_news = models.IntegerField(default=0)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)  # связь «один ко многим» с моделью Author
-    products = models.ManyToManyField(Category, through='PostCategory',
+    choose_news = models.CharField(max_length=2, choices=POSITIONS)
+    datetime_post = models.DateTimeField(auto_now_add=True)
+    category = models.ManyToManyField(Category, through='PostCategory',
                                       on_delete=models.CASCADE)  # связь «многие ко многим» с моделью Category
+    title = models.CharField(max_length=255, default='Заголовок статьи/новости')
+    text = models.TextField(default='Текст статьи/новости')
+    rating = models.IntegerField(default=0)
 
     def like(self):
         """Метод увеличивает рейтинг на единицу."""
-        self.rating_news += 1
+        self.rating += 1
         self.save()
 
     def dislike(self):
         """Метод уменьшает рейтинг на единицу."""
-        self.rating_news -= 1
+        self.rating -= 1
         self.save()
 
     def preview(self):
         """Метод возвращает начало статьи (пред-ый просмотр) длиной 124 символа и добавляет многоточие в конце"""
         preview_length = 124
-        if len(self.text_news) <= preview_length:
-            return self.text_news
+        if len(self.text) <= preview_length:
+            print(self.text)  # проверочная
+            return self.text
         else:
-            return self.text_news[:preview_length] + '...'
+            print(self.text[:preview_length] + '...')  # проверочная
+            return self.text[:preview_length] + '...'
 
 
 class PostCategory(models.Model):
@@ -68,16 +75,16 @@ class PostCategory(models.Model):
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)  # связь «один ко многим» с моделью Post
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # связь «один ко многим» со встроенной моделью User
-    text_comment = models.TextField(ddefault='Комментарий')
+    text = models.TextField(default='Комментарий')
     datetime_comment = models.DateTimeField(auto_now_add=True)
-    rating_comment = models.IntegerField(default=0)
+    rating = models.IntegerField(default=0)
 
     def like(self):
         """Метод увеличивает рейтинг на единицу."""
-        self.rating_comment += 1
+        self.rating += 1
         self.save()
 
     def dislike(self):
         """Метод уменьшает рейтинг на единицу."""
-        self.rating_comment -= 1
+        self.rating -= 1
         self.save()
