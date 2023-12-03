@@ -22,8 +22,8 @@ cat3 = Category.objects.create(name="образование")
 cat4 = Category.objects.create(name="экономика")
 
 4. Добавить 2 статьи и 1 новость.
-news1 = Post.objects.create(choose_news="AR", author=author1, title="Заголовок статьи №1", text="Текст статьи №1)
-news2 = Post.objects.create(choose_news="AR", author=author2, title="Заголовок статьи №2", text="Текст статьи №2)
+news1 = Post.objects.create(choose_news="AR", author=author1, title="Заголовок статьи №1", text="Текст статьи №1")
+news2 = Post.objects.create(choose_news="AR", author=author2, title="Заголовок статьи №2", text="Текст статьи №2")
 news3 = Post.objects.create(choose_news="NE", author=author1, title="Заголовок новости №1", text="Текст новости №1")
 
 5. Присвоить им категории (как минимум в одной статье/новости должно быть не меньше 2 категорий).
@@ -32,10 +32,11 @@ news2.category.add(cat2)
 news3.category.add(cat4)
 
 6. Создать как минимум 4 комментария к разным объектам модели Post (в каждом объекте должен быть как минимум один комментарий).
-comment1 = Comment.objects.create(user=author1 , post=news1, text="комментарий№1")
-comment2 = Comment.objects.create(user=author2 , post=news2, text="комментарий№2")
-comment3 = Comment.objects.create(user=author1 , post=news3, text="комментарий№3")
-comment4 = Comment.objects.create(user=author2 , post=news1, text="комментарий№4")
+comment1 = Comment.objects.create(user=user1, post=news1, text="комментарий№1")
+comment2 = Comment.objects.create(user=user2, post=news2, text="комментарий№2")
+comment3 = Comment.objects.create(user=user1, post=news3, text="комментарий№3")
+comment4 = Comment.objects.create(user=user2, post=news1, text="комментарий№4")
+comment5 = Comment.objects.create(user=user2, post=news2, text="комментарий№5")
 
 7. Применяя функции like() и dislike() к статьям/новостям и комментариям, скорректировать рейтинги этих объектов.
 comment1.like()
@@ -63,11 +64,13 @@ author2.update_rating()
 9. Вывести username и рейтинг лучшего пользователя (применяя сортировку и возвращая поля первого объекта).
 authors = Author.objects.all().order_by("-rating").values("user__username", "rating")
 best_author = authors[0] if authors else None
+print(best_author) или best_author
 
 10. Вывести дату добавления, username автора, рейтинг, заголовок и превью лучшей статьи, основываясь на лайках/дислайках к этой статье.
 from django.db.models import F
-posts = Post.objects.all().order_by("-rating").values("datetime_post", "author__user__username", "rating", "title", preview=F('text'))
+posts = Post.objects.all().order_by("-rating").values("pk", "datetime_post", "author__user__username", "rating", "title", preview=F('text'))
 best_post = posts[0] if posts else None
+print(best_post) или best_post
 
 11. Вывести все комментарии (дата, пользователь, рейтинг, текст) к этой статье.
-Comment.objects.filter(post=best_post["id"]).values("datetime_comment", "user__user__username",  "rating", "text")
+Comment.objects.filter(post=best_post["pk"]).values("datetime_comment", "user__username",  "rating", "text")

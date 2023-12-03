@@ -40,8 +40,7 @@ class Post(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)  # связь «один ко многим» с моделью Author
     choose_news = models.CharField(max_length=2, choices=POSITIONS)
     datetime_post = models.DateTimeField(auto_now_add=True)
-    category = models.ManyToManyField(Category, through='PostCategory',
-                                      on_delete=models.CASCADE)  # связь «многие ко многим» с моделью Category
+    category = models.ManyToManyField(Category, through='PostCategory')  # связь «многие ко многим» с моделью Category
     title = models.CharField(max_length=255, default='Заголовок статьи/новости')
     text = models.TextField(default='Текст статьи/новости')
     rating = models.IntegerField(default=0)
