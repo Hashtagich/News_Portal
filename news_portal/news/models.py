@@ -59,10 +59,8 @@ class Post(models.Model):
         """Метод возвращает начало статьи (пред-ый просмотр) длиной 124 символа и добавляет многоточие в конце"""
         preview_length = 124
         if len(self.text) <= preview_length:
-            print(self.text)  # проверочная
             return self.text
         else:
-            print(self.text[:preview_length] + '...')  # проверочная
             return self.text[:preview_length] + '...'
 
 
