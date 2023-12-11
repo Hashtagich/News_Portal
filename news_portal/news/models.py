@@ -27,6 +27,9 @@ class Author(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Post(models.Model):
     article = 'AR'
@@ -44,6 +47,9 @@ class Post(models.Model):
     title = models.CharField(max_length=255, default='Заголовок статьи/новости')
     text = models.TextField(default='Текст статьи/новости')
     rating = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f'{self.title.title()}: {self.text[:20]}'
 
     def like(self):
         """Метод увеличивает рейтинг на единицу."""
