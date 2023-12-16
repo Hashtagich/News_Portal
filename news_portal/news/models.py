@@ -10,6 +10,9 @@ class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     rating = models.IntegerField(default=0)
 
+    def __str__(self):
+        return f'{self.user}'
+
     def update_rating(self):
         """Метод, который обновляет рейтинг пользователя, переданный в аргумент этого метода.
         Он состоит из следующего:
@@ -50,6 +53,9 @@ class Post(models.Model):
 
     def __str__(self):
         return f'{self.title.title()}: {self.text[:20]}'
+
+    def get_absolute_url(self):
+        return f'/news/{self.id}'
 
     def like(self):
         """Метод увеличивает рейтинг на единицу."""

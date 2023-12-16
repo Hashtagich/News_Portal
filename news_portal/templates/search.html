@@ -9,58 +9,60 @@ All News
 
 {% block content %}
     <h1>Новостная лента</h1>
-    {% if news %}
-    <p><i>Количество всех новостей: <u>{{filter.qs|length}}</u></i></p>
+    {% if filter.qs %}
+        <p><i>Количество найденных новостей/статей: <u>{{filter.qs|length}}</u></i></p>
 
 
-    <form method="GET">
-        {{ filter.form }} <!-- Форму от фильтров за нас сделает Django. А вот кнопку, увы придётся делать самому -->
-        <input type="submit" value="Найти">
-    </form>
+        <form method="GET">
+            {{ filter.form }}
+            <input type="submit" value="Найти">
+        </form>
 
-    <table>
-        <thead>
-            <th>Заголовок</th>
-            <th>Дата публикации</th>
-            <th>Краткое содержание</th>
-        </thead>
-        {% for val in filter.qs %}
-        <tr>
-            <td>{{ val.title|censor }}</td>
-            <td>{{ val.datetime_post|date:'d M. Y' }}</td>
-            <td>{{ val.text|truncatechars:20|censor }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+        <table>
+            <tr>
+                <th>Заголовок</th>
+                <th>Краткое содержание</th>
+                <th>Дата публикации</th>
+                <th>Форматирование</th>
+            </tr>
 
-
-    {% if is_paginated %}
-
-        <!-- Если доступна предыдущая страница, то даём ссылку на неё и самую первую страницу -->
-        {% if page_obj.has_previous %}
-            <a href="?page=1">First</a>
-            <a href="?page={{ page_obj.previous_page_number }}"><<<</a>
-        {% endif %}
-
-        <!-- Показываем только текущую страницу и ближайшие к ней, чтобы список не тянулся и не захламлял страницу -->
-        {% for num in page_obj.paginator.page_range %}
-            {% if page_obj.number == num %}
-                <a>{{ num }}</a>
-            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}            <a href="?page={{ num }}">{{ num }}</a>
+            {% for val in filter.qs %}
+            <tr>
+                <td>
+                    <a href="{% url 'post_detail' val.id %}">{{ val.title|censor }}</a>
+                </td>
+                <td>{{ val.text|truncatechars:20|censor }}</td>
+                <td>{{ val.datetime_post|date:'d M. Y' }}</td>
+                <td>
+                    <a href="{% url 'post_update' val.id %}"><u>Редактировать</u></a>
+                    <a href="{% url 'post_delete' val.id %}"><u> Удалить </u></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+<!--Перелистывание страниц-->
+        {% if is_paginated %}
+            {% if page_obj.has_previous %}
+                <a href="?page=1">First</a>
+                <a href="?page={{ page_obj.previous_page_number }}"><--</a>
             {% endif %}
-        {% endfor %}
 
-        <!-- Если есть следующая страница, то даём ссылку на неё и на самую последнюю страницу -->
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">>>></a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <a>{{ num }}</a>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <a href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">--></a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+            {% endif %}
         {% endif %}
-
-    {% endif %}
-
 
     {% else %}
-    <h2>Товаров нет!</h2>
+        <h2>Статей нет!</h2>
     {% endif %}
 
 {% endblock content %}
