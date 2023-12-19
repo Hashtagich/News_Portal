@@ -20,13 +20,16 @@ class PostsSearchList(ListView):
     ordering = '-datetime_post'
     template_name = 'search.html'
     context_object_name = 'news'
-    paginate_by = 2
+    paginate_by = 10
+
+    def get_queryset(self):
+        self.queryset = PostFilter(self.request.GET, queryset=super().get_queryset())
+        return self.queryset.qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['filter'] = PostFilter(self.request.GET, queryset=self.get_queryset())
+        context['filter'] = self.queryset
         return context
-
 
 
 class PostDetail(DetailView):
