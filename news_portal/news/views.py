@@ -28,6 +28,7 @@ class PostsSearchList(ListView):
         return context
 
 
+
 class PostDetail(DetailView):
     model = Post
     template_name = 'post.html'
