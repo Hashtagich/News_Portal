@@ -1,7 +1,7 @@
 {% extends 'flatpages/default.html' %}
 
+
 {% load custom_filters %}
-{% load custom_tags %}
 
 {% block title %}
 All News
@@ -11,7 +11,13 @@ All News
 {% block content %}
     <h1>Новостная лента</h1>
     {% if news %}
-        <p><i>Количество новостей/статей: <u>{{news|length}}</u></i></p>
+        <p><i>Количество найденных новостей/статей: <u>{{filter.qs|length}}</u></i></p>
+
+
+        <form method="GET">
+            {{ filter.form }}
+            <input type="submit" value="Найти">
+        </form>
 
         <table>
             <tr>
@@ -27,7 +33,7 @@ All News
                     <a href="{% url 'post_detail' val.id %}">{{ val.title|censor }}</a>
                 </td>
                 <td>{{ val.text|truncatechars:20|censor }}</td>
-                <td>{{ val.datetime_post|date:'d M. Y h:m:s' }}</td>
+                <td>{{ val.datetime_post|date:'d M. Y' }}</td>
                 <td>
                     <a href="{% url 'post_update' val.id %}"><u>Редактировать</u></a>
                     <a href="{% url 'post_delete' val.id %}"><u> Удалить </u></a>
@@ -35,9 +41,11 @@ All News
             </tr>
             {% endfor %}
         </table>
+
     {% else %}
-        <h2>Новостей нет!</h2>
+        <h2>Статей нет!</h2>
     {% endif %}
 
 {% include "flatpages/paginate.html" %}
+
 {% endblock content %}
