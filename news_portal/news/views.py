@@ -7,7 +7,7 @@ from .models import Post
 
 
 # Create your views here.
-class PostsList(ListView):
+class PostsList(LoginRequiredMixin, ListView):
     model = Post
     ordering = '-datetime_post'
     template_name = 'news/posts.html'
@@ -15,7 +15,7 @@ class PostsList(ListView):
     paginate_by = 10
 
 
-class PostsSearchList(ListView):
+class PostsSearchList(LoginRequiredMixin, ListView):
     model = Post
     ordering = '-datetime_post'
     template_name = 'news/search.html'
@@ -32,18 +32,18 @@ class PostsSearchList(ListView):
         return context
 
 
-class PostDetail(DetailView):
+class PostDetail(LoginRequiredMixin,DetailView):
     model = Post
     template_name = 'news/post.html'
     context_object_name = 'news'
 
 
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin,CreateView):
     template_name = 'news/post_create.html'
     form_class = PostForm
 
 
-class PostUpdateView(UpdateView):
+class PostUpdateView(LoginRequiredMixin,UpdateView):
     template_name = 'news/post_edit.html'
     form_class = PostForm
 
@@ -52,7 +52,7 @@ class PostUpdateView(UpdateView):
         return Post.objects.get(pk=id)
 
 
-class PostDeleteView(DeleteView):
+class PostDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'news/post_delete.html'
     queryset = Post.objects.all()
     success_url = '/news/'
