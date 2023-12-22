@@ -32,18 +32,18 @@ class PostsSearchList(LoginRequiredMixin, ListView):
         return context
 
 
-class PostDetail(LoginRequiredMixin,DetailView):
+class PostDetail(LoginRequiredMixin, DetailView):
     model = Post
     template_name = 'news/post.html'
     context_object_name = 'news'
 
 
-class PostCreateView(LoginRequiredMixin,CreateView):
+class PostCreateView(LoginRequiredMixin, CreateView):
     template_name = 'news/post_create.html'
     form_class = PostForm
 
 
-class PostUpdateView(LoginRequiredMixin,UpdateView):
+class PostUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'news/post_edit.html'
     form_class = PostForm
 
@@ -60,3 +60,8 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
 
 class HomeView(LoginRequiredMixin, TemplateView):
     template_name = 'flatpages/home.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_not_premium'] = not self.request.user.groups.filter(name='authors').exists()
+        return context
