@@ -1,7 +1,7 @@
 {% extends 'flatpages/default.html' %}
 
 {% block title %}
-{{ flatpages.title }}
+Home
 {% endblock title %}
 
 {% block content %}
@@ -9,4 +9,11 @@
 <hr>
 <h4>Tут ничего интересно, проходите дальше</h4>
 <img src="https://i.gifer.com/4UiS.gif", alt="Если вы это читает значит гифка не подгрузилась(">
+
+<br>
+<br>
+{% if is_not_premium %}
+<button> <a href="sign/upgrade/"> Стать автором</a> </button>
+{% endif %}
+
 {% endblock content %}
