@@ -12,7 +12,7 @@ class BaseRegisterForm(UserCreationForm, SignupForm):
 
     def save(self, request):
         user = super(BaseRegisterForm, self).save(request)
-        basic_group = Group.objects.get(name='basic')
+        basic_group = Group.objects.get(name='common')
         basic_group.user_set.add(user)
         return user
 
