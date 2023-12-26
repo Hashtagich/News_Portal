@@ -5,15 +5,16 @@ Home
 {% endblock title %}
 
 {% block content %}
-<h1>Я стартовая страница</h1>
-<hr>
-<h4>Tут ничего интересно, проходите дальше</h4>
-<img src="https://i.gifer.com/4UiS.gif", alt="Если вы это читает значит гифка не подгрузилась(">
+    <h1>Я стартовая страница</h1>
+    <hr>
+    <h4>Tут ничего интересно, проходите дальше</h4>
+    <img src="https://i.gifer.com/4UiS.gif", alt="Если вы это читает значит гифка не подгрузилась(">
 
-<br>
-<br>
-{% if is_not_premium %}
-<button> <a href="sign/upgrade/"> Стать автором</a> </button>
+    <br>
+    <br>
+    {% if is_not_premium %}
+    <a class="btn btn-dark" href="sign/upgrade/"> Стать автором</a>
+
 {% endif %}
 
 {% endblock content %}

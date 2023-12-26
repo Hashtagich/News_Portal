@@ -10,35 +10,46 @@
     <link href="{% static 'css/styles.css' %}" rel="stylesheet"/>
 </head>
 <body>
-<!-- Responsive navbar-->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+
+<header class="p-3 text-bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="/admin/">Панель Администратора</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse"
-                data-target="#navbarResponsive"
-                aria-controls="navbarResponsive" aria-expanded="false"
-                aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="/news/">Новости</a></li>
-                <li class="nav-item"><a class="nav-link" href="/search/">Поиск новостей</a></li>
-                <li class="nav-item"><a class="nav-link" href="/add/">Добавить новость</a></li>
+        <nav class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <nav class="navbar bg-body-tertiary">
+                <div class="container-fluid">
+                    <a class="navbar-brand text-white text-start ms-0" href="/">
+                        News Portal
+                    </a>
+                </div>
+            </nav>
 
-                {% if request.user.username %}
-                <li class="nav-item"><p class="nav-link"> {{request.user.username}} </p></li>
-                <li class="nav-item"> <button><a href="/sign/logout/">Выйти</a></button> </li>
-                {% else %}
-                <li class="nav-item"><a class="nav-link" href="/accounts/login/">Вход/Регистрация</a></li>
-                <li class="nav-item"> <button><a href="/accounts/login/">Войти</a></button> </li>
-                {% endif %}
 
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 text-center">
+                <li><a href="{% url 'news'%}" class="nav-link px-2 text-white">Новости</a></li>
+                <li><a href="{% url 'post_search'%}" class="nav-link px-2 text-white">Поиск новостей</a></li>
+                <li><a href="{% url 'post_create'%}" class="nav-link px-2 text-white">Добавить новость</a></li>
+                <li><a href="/admin/" class="nav-link px-2 text-white">Панель Администратора</a></li>
             </ul>
-        </div>
+
+
+            <div class="text-end d-flex align-items-center">
+                {% if request.user.username %}
+                <a href="{% url 'personal_account' pk=request.user.id %}" class="link-body-emphasis text-decoration-none show me-2 text-white"
+                   data-bs-toggle="dropdown" aria-expanded="true">
+                    {{ request.user.username }}
+                </a>
+                <a href="/sign/logout/" class="btn btn-warning me-2">Выйти</a>
+                {% else %}
+                <a href="/accounts/login/" class="btn btn-outline-light me-2">Войти</a>
+                <a href="/accounts/signup/" class="btn btn-warning">Регистрация</a>
+                <!--<button type="button" class="btn btn-outline-light me-2"><a href="/accounts/login/">Войти</a></button>-->
+                <!--<button type="button" class="btn btn-warning"><a href="/accounts/signup/">Регистрация</a></button>-->
+                {% endif %}
+            </div>
+        </nav>
     </div>
-</nav>
+</header>
+
+
 <!-- Page content-->
 <div class="container">
     <div class="row">

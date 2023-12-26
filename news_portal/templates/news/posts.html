@@ -12,29 +12,27 @@ All News
     <h1>Новостная лента</h1>
     {% if news %}
         <p><i>Количество новостей/статей: <u>{{news|length}}</u></i></p>
+        <hr>
+        {% for val in news %}
+            <div style="text-align: left;">
+                <a href="{% url 'post_detail' val.id %}">{{ val.title|censor }}</a>
+                <span style="color: gray;">(автор: {{val.author}})</span>
+                <br>
+                <b>{{ val.datetime_post|date:'d M. Y h:m:s' }}</b>
+                <p><b>Категории:
+                    {% for cat in val.category.all%}
+                        {{cat|title}}
+                    {% endfor %}
+                </b></p>
 
-        <table>
-            <tr>
-                <th>Заголовок</th>
-                <th>Краткое содержание</th>
-                <th>Дата публикации</th>
-                <th>Форматирование</th>
-            </tr>
+                <p>{{ val.text|truncatechars:50|censor }}</p>
 
-            {% for val in news %}
-            <tr>
-                <td>
-                    <a href="{% url 'post_detail' val.id %}">{{ val.title|censor }}</a>
-                </td>
-                <td>{{ val.text|truncatechars:20|censor }}</td>
-                <td>{{ val.datetime_post|date:'d M. Y h:m:s' }}</td>
-                <td>
-                    <a href="{% url 'post_update' val.id %}"><u>Редактировать</u></a>
-                    <a href="{% url 'post_delete' val.id %}"><u> Удалить </u></a>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
+                <a class="btn btn-success" href="{% url 'post_update' val.id %}" role="button">Редактировать</a>
+                <a class="btn btn-danger" href="{% url 'post_delete' val.id %}" role="button">Удалить</a>
+            </div>
+            <hr>
+        {% endfor %}
+
     {% else %}
         <h2>Новостей нет!</h2>
     {% endif %}

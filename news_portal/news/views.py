@@ -3,7 +3,7 @@ from django.views.generic import ListView, UpdateView, CreateView, DetailView, D
 
 from .filters import PostFilter
 from .forms import PostForm
-from .models import Post
+from .models import Post, User
 
 
 # Create your views here.
@@ -82,4 +82,16 @@ class HomeView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['is_not_premium'] = not self.request.user.groups.filter(name='authors').exists()
+        return context
+
+
+class PersonalAccountView(LoginRequiredMixin, ListView):
+    model = User
+    template_name = 'account/personal_account.html'
+    context_object_name = 'user'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_id = self.kwargs['pk']  # Получаем значение идентификатора пользователя из URL
+        context['user'] = User.objects.get(id=user_id)  # Получаем конкретного пользователя по его ID
         return context

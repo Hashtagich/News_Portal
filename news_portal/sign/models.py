@@ -32,6 +32,7 @@ class BaseRegisterForm(UserCreationForm, SignupForm):
 
         msg = EmailMultiAlternatives(
             subject='Регистрация успешно пройдена!',
+            body='',
             from_email=EMAIL_HOST_USER,
             to=[user.email],
         )
