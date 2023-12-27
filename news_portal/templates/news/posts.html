@@ -27,8 +27,19 @@ All News
 
                 <p>{{ val.text|truncatechars:50|censor }}</p>
 
-                <a class="btn btn-success" href="{% url 'post_update' val.id %}" role="button">Редактировать</a>
-                <a class="btn btn-danger" href="{% url 'post_delete' val.id %}" role="button">Удалить</a>
+                {% if request.user in val.category.first.subscriber.all%}
+                    <a class="btn btn-danger" href="{% url 'category_unsubscribe' val.postcategory_set.first.category.pk %}" role="button">Отписаться</a>
+                {% else %}
+                    <a class="btn btn-success" href="{% url 'category_subscribe' val.postcategory_set.first.category.pk %}" role="button">Подписаться</a>
+                {% endif %}
+
+                {% if request.user.author%}
+                    <a class="btn btn-warning" href="{% url 'post_update' val.id %}" role="button">Редактировать</a>
+                    <a class="btn btn-danger" href="{% url 'post_delete' val.id %}" role="button">Удалить</a>
+                {% else %}
+                   <span style="color: gray;">Авторы могу редактировать и удалять статьи.</span>
+
+                {% endif %}
             </div>
             <hr>
         {% endfor %}
