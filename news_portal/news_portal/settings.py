@@ -27,6 +27,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS')]
+SITE_URL = os.getenv('SITE_URL')
 
 # Application definition
 
@@ -37,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'news',
+    'news.apps.NewsConfig',
     'sign',
     'django.contrib.sites',
     'django.contrib.flatpages',
