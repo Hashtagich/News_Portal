@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Notification</title>
+</head>
+<body>
+    <h2>Здравствуйте! Новая неделя, а это значит, что пришло время последних статей за неделю!</h2>
+    <ol>
+    {% for post in posts %}
+        <li><a href="{{ head_link }}{{post.get_absolute_url}}"> {{post.title}}</a></li>
+    {% endfor %}
+    </ol>
+</body>
+</html>
