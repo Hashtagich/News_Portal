@@ -24,6 +24,3 @@ class BaseRegisterForm(UserCreationForm, SignupForm):
                   "email",
                   "password1",
                   "password2",)
-
-
-

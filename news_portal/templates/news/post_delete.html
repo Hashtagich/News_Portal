@@ -6,21 +6,16 @@ Delete News
 
 {% block content %}
     <h2>Вы действительно хотите удалить данную новость?</h2>
-    <table>
-        <thead>
-            <th>Заголовок</th>
-            <th>Дата публикации</th>
-            <th>Текст</th>
-        </thead>
-        <tr>
-            <td>{{ post.title }}</td>
-            <td>{{ post.datetime_post|date:'d M. Y' }}</td>
-            <td>{{ post.text }}</td>
+    <hr>
+    <div style="text-align: left;">
+        <h4>{{ post.title }}</h4>
+        <b>{{ post.datetime_post|date:'d M. Y h:m:s' }}</b>
+        <span style="color: gray;">(автор: {{post.author}})</span>
+        <p>{{ post.text }}</p>
+    </div>
 
-        </tr>
-    </table>
-
-<form method="POST">
-    {% csrf_token %}
-    <input type="submit" value="подтвердить"></form>
+    <form method="POST">
+        {% csrf_token %}
+        <input type="submit" class="btn btn-success" value="Подтвердить">
+    </form>
 {% endblock content %}

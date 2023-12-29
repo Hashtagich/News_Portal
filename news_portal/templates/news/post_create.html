@@ -6,12 +6,13 @@ Create News
 
 
 {% block content %}
-<h1>Добавление новой новости/статьи</h1>
+    <h1>Добавление новой новости/статьи</h1>
+    <hr>
 
-<form method="POST">
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Добавить статью">
-</form>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" class="btn btn-success" value="Добавить статью">
+    </form>
 
 {% endblock content %}

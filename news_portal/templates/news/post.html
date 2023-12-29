@@ -7,11 +7,18 @@ News
 {% endblock title %}
 
 {% block content %}
-<h1>{{ news.title|censor }}</h1>
-<h5><i>{{ news.datetime_post|date:'d M. Y' }}</i></h5>
-
-{% for text in news.text|split %}
-<p>{{ text|censor }}</p>
+    <h2>{{ news.title|censor }}</h2>
+    <h5>
+        <i>
+            {{ news.datetime_post|date:'d M. Y h:m:s' }}
+            <span style="color: gray;">(автор: {{news.author}})</span>
+        </i>
+    </h5>
+    <hr>
+    <div style="text-align: left;">
+        {% for text in news.text|split %}
+        <p>{{ text|censor }}</p>
+    </div>
 {% endfor %}
 
 {% endblock content %}

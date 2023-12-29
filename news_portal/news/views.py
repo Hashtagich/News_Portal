@@ -1,9 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.shortcuts import render
 from django.views.generic import ListView, UpdateView, CreateView, DetailView, DeleteView, TemplateView
-
+from django.contrib.auth.decorators import login_required
 from .filters import PostFilter
 from .forms import PostForm
-from .models import Post
+from .models import Post, User, Category
 
 
 # Create your views here.
@@ -83,3 +84,31 @@ class HomeView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context['is_not_premium'] = not self.request.user.groups.filter(name='authors').exists()
         return context
+
+
+class PersonalAccountView(LoginRequiredMixin, ListView):
+    model = User
+    template_name = 'account/personal_account.html'
+    context_object_name = 'user'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_id = self.kwargs['pk']  # Получаем значение идентификатора пользователя из URL
+        context['user'] = User.objects.get(id=user_id)  # Получаем конкретного пользователя по его ID
+        return context
+
+
+@login_required
+def subscribe(request, pk):
+    user = request.user
+    category = Category.objects.get(id=pk)
+    category.subscriber.add(user)
+    return render(request, 'news/subscribe.html', {'category': category})
+
+
+@login_required
+def unsubscribe(request, pk):
+    user = request.user
+    category = Category.objects.get(id=pk)
+    category.subscriber.remove(user)
+    return render(request, 'news/unsubscribe.html', {'category': category})
