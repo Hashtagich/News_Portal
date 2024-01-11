@@ -1,10 +1,31 @@
-# from django.core.mail import EmailMultiAlternatives
-# from django.db.models.signals import m2m_changed
-# from django.dispatch import receiver
+from django.db.models.signals import m2m_changed
+from django.dispatch import receiver
+
+from .models import PostCategory
+from .tasks import send_notifications
+
+
 # from django.template.loader import render_to_string
-#
+# from django.core.mail import EmailMultiAlternatives
 # from news_portal.settings import SITE_URL, EMAIL_HOST_USER
-# from .models import PostCategory
+
+@receiver(m2m_changed, sender=PostCategory)
+def notify_new_post(sender, instance, **kwargs):
+    if kwargs['action'] == 'post_add':
+        categories = instance.category.all()
+        subs = []
+        for i in categories:
+            subs += i.subscriber.all()
+
+        subs_mail = [sub.email for sub in subs]
+
+        send_notifications.delay(
+            preview=instance.preview(),
+            pk=instance.pk,
+            title=instance.title,
+            sub_list=subs_mail,
+        )
+
 #
 #
 # def send_notifications(preview, pk, title, sub_list):

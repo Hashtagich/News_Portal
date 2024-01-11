@@ -2,11 +2,9 @@ from datetime import datetime, timedelta
 
 from celery import shared_task
 from django.core.mail import EmailMultiAlternatives
-from django.db.models.signals import m2m_changed
-from django.dispatch import receiver
 from django.template.loader import render_to_string
 
-from news.models import Post, Category, PostCategory
+from news.models import Post, Category
 from news_portal.settings import EMAIL_HOST_USER, SITE_URL
 
 
@@ -55,21 +53,3 @@ def send_notifications(preview, pk, title, sub_list):
     )
     msg.attach_alternative(html_context, 'text/html')
     msg.send()
-
-
-@receiver(m2m_changed, sender=PostCategory)
-def notify_new_post(sender, instance, **kwargs):
-    if kwargs['action'] == 'post_add':
-        categories = instance.category.all()
-        subs = []
-        for i in categories:
-            subs += i.subscriber.all()
-
-        subs_mail = [sub.email for sub in subs]
-
-        send_notifications.delay(
-            preview=instance.preview(),
-            pk=instance.pk,
-            title=instance.title,
-            sub_list=subs_mail,
-        )
