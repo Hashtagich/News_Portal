@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+{% load i18n %}
+{% load tz %}
+
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -11,6 +14,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
     <style>
         body {
+          background-color: {% if current_time.hour >= 19 or current_time.hour <= 8 %} black {% else %} white {% endif %};
+          color: {% if current_time.hour >= 19 or current_time.hour <= 7 %} white {% else %} black {% endif %};
           margin: 0;
           padding-bottom: 100px; /* Высота футера */
         }
@@ -78,7 +83,7 @@
     </div>
 </div>
 
-<footer class="py-3 my-4" style="background-color: black; color: white;">
+<footer class="text-bg-dark">
     <p class="text-center text-body-secondary">© 2023-2024 Сайт в разработке.</p>
 </footer>
 
