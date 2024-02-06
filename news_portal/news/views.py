@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from .filters import PostFilter
 from .forms import PostForm
 from .models import Post, User, Category
-
+from .serializers import CategorySerializer, PostSerializer, AuthorSerializer
 
 # Create your views here.
 class PostsList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
