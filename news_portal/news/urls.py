@@ -1,5 +1,12 @@
-from django.urls import path
+from django.urls import path, include
 from .views import *
+from news.views import CategoryViewset, PostViewset, AuthorViewest
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+router.register(r'categorys', CategoryViewset)
+router.register(r'posts', PostViewset)
+router.register(r'authors', AuthorViewest)
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
@@ -12,4 +19,5 @@ urlpatterns = [
     path('account/<int:pk>/', PersonalAccountView.as_view(), name='personal_account'),
     path('category/<int:pk>/subscribe', subscribe, name='category_subscribe'),
     path('category/<int:pk>/unsubscribe', unsubscribe, name='category_unsubscribe'),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]

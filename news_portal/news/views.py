@@ -4,8 +4,10 @@ from django.views.generic import ListView, UpdateView, CreateView, DetailView, D
 from django.contrib.auth.decorators import login_required
 from .filters import PostFilter
 from .forms import PostForm
-from .models import Post, User, Category
+from .models import Post, User, Category, Author
 from .serializers import CategorySerializer, PostSerializer, AuthorSerializer
+from rest_framework import viewsets
+from rest_framework import permissions
 
 # Create your views here.
 class PostsList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
@@ -112,3 +114,18 @@ def unsubscribe(request, pk):
     category = Category.objects.get(id=pk)
     category.subscriber.remove(user)
     return render(request, 'news/unsubscribe.html', {'category': category})
+
+
+class CategoryViewset(viewsets.ModelViewSet):
+   queryset = Category.objects.all()
+   serializer_class = CategorySerializer
+
+
+class PostViewset(viewsets.ModelViewSet):
+   queryset = Post.objects.all()
+   serializer_class = PostSerializer
+
+
+class AuthorViewest(viewsets.ModelViewSet):
+   queryset = Author.objects.all()
+   serializer_class = AuthorSerializer
