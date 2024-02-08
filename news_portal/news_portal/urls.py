@@ -3,12 +3,11 @@ from django.urls import path, include
 from django.views.generic import TemplateView
 from rest_framework import routers
 
-from news.views import CategoryViewset, PostViewset, AuthorViewest
+from news.views import CategoryViewset, PostsViewset
 
 router = routers.DefaultRouter()
-router.register(r'categorys', CategoryViewset)
-router.register(r'posts', PostViewset)
-router.register(r'authors', AuthorViewest)
+router.register(r'posts', PostsViewset)
+router.register(r'category', CategoryViewset)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -21,5 +20,4 @@ urlpatterns = [
         extra_context={'schema_url': 'openapi-schema'}
     ), name='swagger-ui'),
     path('api/', include(router.urls)),
-    # path('api-own/', include('api.urls')),
 ]
