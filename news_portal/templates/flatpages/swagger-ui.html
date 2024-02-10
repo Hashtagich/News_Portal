@@ -9,23 +9,21 @@
 <body>
 <div id="swagger-ui"></div>
 <script src="https://unpkg.com/swagger-ui-dist@3.52.1/swagger-ui-bundle.js"></script>
+
 <script>
-    window.onload = function() {
-        const ui = SwaggerUIBundle({
-            url: "/static/openapi-schema.yml",
-            dom_id: '#swagger-ui',
-            presets: [
-                SwaggerUIBundle.presets.apis,
-                SwaggerUIBundle.SwaggerUIStandalonePreset
-            ],
-            layout: "BaseLayout",
-            plugins: [
-                SwaggerUIBundle.plugins.DownloadUrl
-            ],
-            deepLinking: true
-        })
-        window.ui = ui
-    }
+    const ui = SwaggerUIBundle({
+        url: "/static/openapi-schema.yml",
+        dom_id: '#swagger-ui',
+        presets: [
+            SwaggerUIBundle.presets.apis,
+            SwaggerUIBundle.SwaggerUIStandalonePreset
+        ],
+        layout: "BaseLayout",
+        requestInterceptor: (request) => {
+            request.headers['X-CSRFToken'] = "{{ csrf_token }}"
+            return request;
+        }
+    })
 </script>
 </body>
 </html>
