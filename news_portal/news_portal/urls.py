@@ -8,7 +8,7 @@ from news.views import CategoryViewset, PostsViewset, AuthorViewset
 router = routers.DefaultRouter()
 router.register(r'posts', PostsViewset)
 router.register(r'category', CategoryViewset)
-router.register(r'author', AuthorViewset, basename='author')
+router.register(r'authors', AuthorViewset, basename='author')
 
 
 urlpatterns = [
