@@ -8,6 +8,12 @@
         {% load static %}
         {% load custom_tags %}
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+        <style>
+            body {
+              background-color: {% if current_time.hour >= 19 or current_time.hour <= 8 %} black {% else %} white {% endif %};
+              color: {% if current_time.hour >= 19 or current_time.hour <= 7 %} white {% else %} black {% endif %};
+            }
+        </style>
     </head>
 
     <body>

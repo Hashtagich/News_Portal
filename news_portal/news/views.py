@@ -1,10 +1,14 @@
+import django_filters
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import render
 from django.views.generic import ListView, UpdateView, CreateView, DetailView, DeleteView, TemplateView
 from django.contrib.auth.decorators import login_required
 from .filters import PostFilter
 from .forms import PostForm
-from .models import Post, User, Category
+from .models import Post, User, Category, Author
+from .serializers import CategorySerializer, PostSerializer, AuthorSerializer
+from rest_framework import viewsets
+from rest_framework.reverse import reverse
 
 
 # Create your views here.
@@ -112,3 +116,21 @@ def unsubscribe(request, pk):
     category = Category.objects.get(id=pk)
     category.subscriber.remove(user)
     return render(request, 'news/unsubscribe.html', {'category': category})
+
+
+# Вьюшки сериализаторов
+
+class CategoryViewset(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+
+class PostsViewset(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filterset_fields = ["choose_news", "category"]
+
+class AuthorViewset(viewsets.ModelViewSet):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
