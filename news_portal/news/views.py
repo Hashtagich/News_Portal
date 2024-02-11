@@ -5,8 +5,8 @@ from django.views.generic import ListView, UpdateView, CreateView, DetailView, D
 from django.contrib.auth.decorators import login_required
 from .filters import PostFilter
 from .forms import PostForm
-from .models import Post, User, Category
-from .serializers import CategorySerializer, PostSerializer
+from .models import Post, User, Category, Author
+from .serializers import CategorySerializer, PostSerializer, AuthorSerializer
 from rest_framework import viewsets
 from rest_framework.reverse import reverse
 
@@ -130,3 +130,7 @@ class PostsViewset(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
     filterset_fields = ["choose_news", "category"]
+
+class AuthorViewset(viewsets.ModelViewSet):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer

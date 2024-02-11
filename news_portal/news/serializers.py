@@ -19,3 +19,18 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
         extra_kwargs = {
             'url': {'view_name': 'post-detail', 'lookup_field': 'pk'}
         }
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name', ]
+
+class AuthorSerializer(serializers.HyperlinkedModelSerializer):
+    user = UserSerializer()
+    class Meta:
+        model = Author
+        fields = ['id', 'url', 'user', 'rating',]
+        extra_kwargs = {
+            'url': {'view_name': 'author-detail', 'lookup_field': 'pk'}
+        }

@@ -3,7 +3,7 @@ info:
   title: ''
   version: ''
 paths:
-  /authors/:
+  /api/authors/:
     get:
       operationId: listAuthors
       description: 'List of authors'
@@ -59,7 +59,7 @@ paths:
           description: ''
       tags:
       - authors
-  /authors/{id}/:
+  /api/authors/{id}/:
     get:
       operationId: retrieveAuthor
       description: ''
@@ -155,7 +155,7 @@ paths:
       tags:
       - authors
 
-  /category/:
+  /api/category/:
     get:
       operationId: listCategories
       description: 'List of categories'
@@ -190,7 +190,7 @@ paths:
       tags:
         - categories
 
-  /category/{id}/:
+  /api/category/{id}/:
     get:
       operationId: retrieveCategory
       description: ''
