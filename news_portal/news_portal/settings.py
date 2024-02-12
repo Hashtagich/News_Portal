@@ -31,6 +31,7 @@ logger = logging.getLogger('django')
 DATE_FORMAT = "%d-%m-%Y %H:%M:%S"
 
 ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS')]
+INTERNAL_IPS = [os.getenv('INTERNAL_IPS')]
 SITE_URL = os.getenv('SITE_URL')
 
 LOGGING = {
@@ -150,7 +151,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    'rest_framework'
+    'rest_framework',
+    'debug_toolbar',
 
 ]
 
@@ -166,7 +168,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'allauth.account.middleware.AccountMiddleware',
-    'basic.middlewares.TimezoneMiddleware'
+    'basic.middlewares.TimezoneMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = 'news_portal.urls'
