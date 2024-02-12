@@ -8,7 +8,7 @@ from .forms import PostForm
 from .models import Post, User, Category, Author
 from .serializers import CategorySerializer, PostSerializer, AuthorSerializer
 from rest_framework import viewsets
-from rest_framework.reverse import reverse
+from django.core.cache import cache
 
 
 # Create your views here.
@@ -80,6 +80,13 @@ class PostDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
         'news.delete_post',
     )
 
+    def get_object(self, *args, **kwargs):  # переопределяем метод получения объекта, как ни странно
+        obj = cache.get(f'post-{self.kwargs["pk"]}', None)
+        if not obj:
+            obj = super().get_object(queryset=self.queryset)
+            cache.set(f'post-{self.kwargs["pk"]}', obj)
+        return obj
+
 
 class HomeView(LoginRequiredMixin, TemplateView):
     template_name = 'flatpages/home.html'
@@ -130,6 +137,7 @@ class PostsViewset(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
     filterset_fields = ["choose_news", "category"]
+
 
 class AuthorViewset(viewsets.ModelViewSet):
     queryset = Author.objects.all()
