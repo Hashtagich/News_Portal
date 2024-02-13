@@ -61,6 +61,7 @@ class Post(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
+        cache.delete('post_list_cache')
         cache.delete(f'post-{self.pk}')
 
     def like(self):

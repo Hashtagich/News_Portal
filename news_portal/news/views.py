@@ -18,9 +18,16 @@ class PostsList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     template_name = 'news/posts.html'
     context_object_name = 'news'
     paginate_by = 10
-    permission_required = (
-        'news.view_post',
-    )
+    permission_required = ('news.view_post',)
+
+    def get_queryset(self):
+        cache_key = 'post_list_cache'
+        cached_data = cache.get(cache_key)
+        if not cached_data:
+            queryset = super().get_queryset()
+            cache.set(cache_key, queryset)
+            return queryset
+        return cached_data
 
 
 class PostsSearchList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
@@ -29,9 +36,7 @@ class PostsSearchList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     template_name = 'news/search.html'
     context_object_name = 'news'
     paginate_by = 10
-    permission_required = (
-        'news.view_post',
-    )
+    permission_required = ('news.view_post',)
 
     def get_queryset(self):
         self.queryset = PostFilter(self.request.GET, queryset=super().get_queryset())
@@ -48,13 +53,14 @@ class PostDetail(LoginRequiredMixin, DetailView):
     template_name = 'news/post.html'
     context_object_name = 'news'
 
-
-    def get_object(self, *args, **kwargs):  # переопределяем метод получения объекта, как ни странно
-        obj = cache.get(f'post-{self.kwargs["pk"]}', None)
-        if not obj:
-            obj = super().get_object(queryset=self.queryset)
-            cache.set(f'post-{self.kwargs["pk"]}', obj)
-        return obj
+    def get_object(self):
+        cache_key = f'post-{self.kwargs["pk"]}'
+        cached_object = cache.get(cache_key)
+        if not cached_object:
+            obj = super().get_object()
+            cache.set(cache_key, obj)
+            return obj
+        return cached_object
 
 
 class PostCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
