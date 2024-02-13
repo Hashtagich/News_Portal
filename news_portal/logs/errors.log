@@ -4071,3 +4071,87 @@ Traceback (most recent call last):
     raise self.error(
 django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 113: 'static'. Did you forget to register or load this tag?
 11-02-2024 13:54:10 ERROR "GET /accounts/login/ HTTP/1.1" 500 241372 D:\clone_projct_from_github\skillfactory\News_Portal\news_portal\venv\Lib\site-packages\django\core\servers\basehttp.py None
+13-02-2024 17:59:23 ERROR Internal Server Error: /news/ C:\Users\anton\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\utils\log.py (<class 'KeyError'>, KeyError('pk'), <traceback object at 0x000001F213455F80>)
+Traceback (most recent call last):
+  File "C:\Users\anton\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\anton\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\anton\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\anton\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\anton\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\contrib\auth\mixins.py", line 109, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\anton\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\anton\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "D:\clone_projct_from_github\skillfactory\News_Portal\news_portal\news\views.py", line 31, in get_queryset
+    cache_key = f'post-{self.kwargs["pk"]}'
+                        ~~~~~~~~~~~^^^^^^
+KeyError: 'pk'
+13-02-2024 17:59:23 ERROR "GET /news/ HTTP/1.1" 500 101815 C:\Users\anton\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\core\servers\basehttp.py None
+13-02-2024 17:59:48 ERROR Internal Server Error: /news/ C:\Users\anton\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\utils\log.py (<class 'KeyError'>, KeyError('pk'), <traceback object at 0x000001F212D62FC0>)
+Traceback (most recent call last):
+  File "C:\Users\anton\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\anton\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\anton\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\anton\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\anton\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\contrib\auth\mixins.py", line 109, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\anton\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\anton\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "D:\clone_projct_from_github\skillfactory\News_Portal\news_portal\news\views.py", line 31, in get_queryset
+    cache_key = f'post-{self.kwargs["pk"]}'
+                        ~~~~~~~~~~~^^^^^^
+KeyError: 'pk'
+13-02-2024 17:59:48 ERROR "GET /news/ HTTP/1.1" 500 101823 C:\Users\anton\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\core\servers\basehttp.py None
+13-02-2024 17:59:53 ERROR Internal Server Error: /news/ C:\Users\anton\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\utils\log.py (<class 'KeyError'>, KeyError('pk'), <traceback object at 0x000001F213768300>)
+Traceback (most recent call last):
+  File "C:\Users\anton\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\anton\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\anton\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\anton\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\anton\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\contrib\auth\mixins.py", line 109, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\anton\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\anton\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "D:\clone_projct_from_github\skillfactory\News_Portal\news_portal\news\views.py", line 31, in get_queryset
+    cache_key = 'post_list_cache'
+                        ^^^^^^^^^^
+KeyError: 'pk'
+13-02-2024 17:59:53 ERROR "GET /news/ HTTP/1.1" 500 101920 C:\Users\anton\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\core\servers\basehttp.py None

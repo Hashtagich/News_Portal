@@ -10,7 +10,6 @@ router.register(r'posts', PostsViewset)
 router.register(r'category', CategoryViewset)
 router.register(r'authors', AuthorViewset, basename='author')
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('pages/', include('django.contrib.flatpages.urls')),
@@ -22,4 +21,5 @@ urlpatterns = [
         extra_context={'schema_url': 'openapi-schema'}
     ), name='swagger-ui'),
     path('api/', include(router.urls)),
+    path("__debug__/", include("debug_toolbar.urls")),
 ]
