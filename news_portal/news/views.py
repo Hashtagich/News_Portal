@@ -49,6 +49,14 @@ class PostDetail(LoginRequiredMixin, DetailView):
     context_object_name = 'news'
 
 
+    def get_object(self, *args, **kwargs):  # переопределяем метод получения объекта, как ни странно
+        obj = cache.get(f'post-{self.kwargs["pk"]}', None)
+        if not obj:
+            obj = super().get_object(queryset=self.queryset)
+            cache.set(f'post-{self.kwargs["pk"]}', obj)
+        return obj
+
+
 class PostCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     template_name = 'news/post_create.html'
     form_class = PostForm
@@ -79,13 +87,6 @@ class PostDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
         'news.view_post',
         'news.delete_post',
     )
-
-    def get_object(self, *args, **kwargs):  # переопределяем метод получения объекта, как ни странно
-        obj = cache.get(f'post-{self.kwargs["pk"]}', None)
-        if not obj:
-            obj = super().get_object(queryset=self.queryset)
-            cache.set(f'post-{self.kwargs["pk"]}', obj)
-        return obj
 
 
 class HomeView(LoginRequiredMixin, TemplateView):
