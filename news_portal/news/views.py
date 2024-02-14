@@ -1,18 +1,29 @@
+from datetime import datetime
+
 import django_filters
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.cache import cache
 from django.shortcuts import render
 from django.views.generic import ListView, UpdateView, CreateView, DetailView, DeleteView, TemplateView
-from django.contrib.auth.decorators import login_required
+from rest_framework import viewsets
+
 from .filters import PostFilter
 from .forms import PostForm
 from .models import Post, User, Category, Author
 from .serializers import CategorySerializer, PostSerializer, AuthorSerializer
-from rest_framework import viewsets
-from django.core.cache import cache
 
 
 # Create your views here.
-class PostsList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+
+class BaseContextMixin:
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_time'] = datetime.now()
+        return context
+
+
+class PostsList(LoginRequiredMixin, PermissionRequiredMixin, BaseContextMixin, ListView):
     model = Post
     ordering = '-datetime_post'
     template_name = 'news/posts.html'
@@ -30,7 +41,7 @@ class PostsList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
         return cached_data
 
 
-class PostsSearchList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+class PostsSearchList(LoginRequiredMixin, PermissionRequiredMixin, BaseContextMixin, ListView):
     model = Post
     ordering = '-datetime_post'
     template_name = 'news/search.html'
@@ -48,7 +59,7 @@ class PostsSearchList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
         return context
 
 
-class PostDetail(LoginRequiredMixin, DetailView):
+class PostDetail(LoginRequiredMixin, BaseContextMixin, DetailView):
     model = Post
     template_name = 'news/post.html'
     context_object_name = 'news'
@@ -63,7 +74,7 @@ class PostDetail(LoginRequiredMixin, DetailView):
         return cached_object
 
 
-class PostCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class PostCreateView(LoginRequiredMixin, PermissionRequiredMixin, BaseContextMixin, CreateView):
     template_name = 'news/post_create.html'
     form_class = PostForm
     permission_required = (
@@ -72,7 +83,7 @@ class PostCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     )
 
 
-class PostUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class PostUpdateView(LoginRequiredMixin, PermissionRequiredMixin, BaseContextMixin, UpdateView):
     template_name = 'news/post_edit.html'
     form_class = PostForm
     permission_required = (
@@ -85,7 +96,7 @@ class PostUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         return Post.objects.get(pk=id)
 
 
-class PostDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+class PostDeleteView(LoginRequiredMixin, PermissionRequiredMixin, BaseContextMixin, DeleteView):
     template_name = 'news/post_delete.html'
     queryset = Post.objects.all()
     success_url = '/news/'
@@ -95,7 +106,7 @@ class PostDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     )
 
 
-class HomeView(LoginRequiredMixin, TemplateView):
+class HomeView(LoginRequiredMixin, BaseContextMixin, TemplateView):
     template_name = 'flatpages/home.html'
 
     def get_context_data(self, **kwargs):
@@ -104,7 +115,7 @@ class HomeView(LoginRequiredMixin, TemplateView):
         return context
 
 
-class PersonalAccountView(LoginRequiredMixin, ListView):
+class PersonalAccountView(LoginRequiredMixin, BaseContextMixin, ListView):
     model = User
     template_name = 'account/personal_account.html'
     context_object_name = 'user'
@@ -119,17 +130,19 @@ class PersonalAccountView(LoginRequiredMixin, ListView):
 @login_required
 def subscribe(request, pk):
     user = request.user
+    current_time = datetime.now()
     category = Category.objects.get(id=pk)
     category.subscriber.add(user)
-    return render(request, 'news/subscribe.html', {'category': category})
+    return render(request, 'news/subscribe.html', {'category': category, 'current_time': current_time})
 
 
 @login_required
 def unsubscribe(request, pk):
     user = request.user
+    current_time = datetime.now()
     category = Category.objects.get(id=pk)
     category.subscriber.remove(user)
-    return render(request, 'news/unsubscribe.html', {'category': category})
+    return render(request, 'news/unsubscribe.html', {'category': category, 'current_time': current_time})
 
 
 # Вьюшки сериализаторов

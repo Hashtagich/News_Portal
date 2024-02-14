@@ -25,7 +25,7 @@
     </head>
     <body>
         {% block body %}
-            <div style="text-align: right; color: green;">
+            <div style="text-align: right;">
                 <header class="p-3 text-bg-dark">
                     {% if user.is_authenticated %}
                         <a href="{% url 'account_email' %}" class="btn btn-warning me-2">{% trans "Изменить адрес эл. почты" %}</a>
