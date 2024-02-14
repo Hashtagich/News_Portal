@@ -15,19 +15,11 @@
     <style>
         body {
           background-color: {% if current_time.hour >= 19 or current_time.hour <= 8 %} black {% else %} white {% endif %};
-          color: {% if current_time.hour >= 19 or current_time.hour <= 7 %} white {% else %} black {% endif %};
+          color: {% if current_time.hour >= 19 or current_time.hour <= 8 %} white {% else %} black {% endif %};
           margin: 0;
           padding-bottom: 100px; /* Высота футера */
         }
 
-        footer {
-          position: fixed;
-          bottom: 0;
-          width: 100%;
-          height: 50px; /* Высота футера */
-          background-color: black;
-          color: white;
-        }
     </style>
 </head>
 <body>
@@ -83,9 +75,7 @@
     </div>
 </div>
 
-<footer class="text-bg-dark">
-    <p class="text-center text-body-secondary">© 2023-2024 Сайт в разработке.</p>
-</footer>
+{% include 'flatpages/footer.html' %}
 
 </body>
 </html>
