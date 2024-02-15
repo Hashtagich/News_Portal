@@ -1,3 +1,4 @@
+{% extends 'flatpages/default.html' %}
 {% load i18n %}
 {% load tz %}
 <!DOCTYPE html>
@@ -8,14 +9,6 @@
         {% load static %}
         <link href="{% static 'css/styles.css' %}" rel="stylesheet"/>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
-        <style>
-            body {
-              background-color: {% if current_time.hour >= 19 or current_time.hour <= 8 %} black {% else %} white {% endif %};
-              color: {% if current_time.hour >= 19 or current_time.hour <= 8 %} white {% else %} black {% endif %};
-              margin: 0;
-              padding-bottom: 100px; /* Высота футера */
-            }
-        </style>
         <title>
             {% block head_title %}
             {% endblock head_title %}

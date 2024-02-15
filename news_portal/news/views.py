@@ -1,5 +1,3 @@
-from datetime import datetime
-
 import django_filters
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
@@ -16,14 +14,7 @@ from .serializers import CategorySerializer, PostSerializer, AuthorSerializer
 
 # Create your views here.
 
-class BaseContextMixin:
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['current_time'] = datetime.now()
-        return context
-
-
-class PostsList(LoginRequiredMixin, PermissionRequiredMixin, BaseContextMixin, ListView):
+class PostsList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = Post
     ordering = '-datetime_post'
     template_name = 'news/posts.html'
@@ -41,7 +32,7 @@ class PostsList(LoginRequiredMixin, PermissionRequiredMixin, BaseContextMixin, L
         return cached_data
 
 
-class PostsSearchList(LoginRequiredMixin, PermissionRequiredMixin, BaseContextMixin, ListView):
+class PostsSearchList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = Post
     ordering = '-datetime_post'
     template_name = 'news/search.html'
@@ -59,7 +50,7 @@ class PostsSearchList(LoginRequiredMixin, PermissionRequiredMixin, BaseContextMi
         return context
 
 
-class PostDetail(LoginRequiredMixin, BaseContextMixin, DetailView):
+class PostDetail(LoginRequiredMixin, DetailView):
     model = Post
     template_name = 'news/post.html'
     context_object_name = 'news'
@@ -74,7 +65,7 @@ class PostDetail(LoginRequiredMixin, BaseContextMixin, DetailView):
         return cached_object
 
 
-class PostCreateView(LoginRequiredMixin, PermissionRequiredMixin, BaseContextMixin, CreateView):
+class PostCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     template_name = 'news/post_create.html'
     form_class = PostForm
     permission_required = (
@@ -83,7 +74,7 @@ class PostCreateView(LoginRequiredMixin, PermissionRequiredMixin, BaseContextMix
     )
 
 
-class PostUpdateView(LoginRequiredMixin, PermissionRequiredMixin, BaseContextMixin, UpdateView):
+class PostUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     template_name = 'news/post_edit.html'
     form_class = PostForm
     permission_required = (
@@ -96,7 +87,7 @@ class PostUpdateView(LoginRequiredMixin, PermissionRequiredMixin, BaseContextMix
         return Post.objects.get(pk=id)
 
 
-class PostDeleteView(LoginRequiredMixin, PermissionRequiredMixin, BaseContextMixin, DeleteView):
+class PostDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     template_name = 'news/post_delete.html'
     queryset = Post.objects.all()
     success_url = '/news/'
@@ -106,7 +97,7 @@ class PostDeleteView(LoginRequiredMixin, PermissionRequiredMixin, BaseContextMix
     )
 
 
-class HomeView(LoginRequiredMixin, BaseContextMixin, TemplateView):
+class HomeView(LoginRequiredMixin, TemplateView):
     template_name = 'flatpages/home.html'
 
     def get_context_data(self, **kwargs):
@@ -115,7 +106,7 @@ class HomeView(LoginRequiredMixin, BaseContextMixin, TemplateView):
         return context
 
 
-class PersonalAccountView(LoginRequiredMixin, BaseContextMixin, ListView):
+class PersonalAccountView(LoginRequiredMixin, ListView):
     model = User
     template_name = 'account/personal_account.html'
     context_object_name = 'user'
@@ -130,19 +121,17 @@ class PersonalAccountView(LoginRequiredMixin, BaseContextMixin, ListView):
 @login_required
 def subscribe(request, pk):
     user = request.user
-    current_time = datetime.now()
     category = Category.objects.get(id=pk)
     category.subscriber.add(user)
-    return render(request, 'news/subscribe.html', {'category': category, 'current_time': current_time})
+    return render(request, 'news/subscribe.html', {'category': category})
 
 
 @login_required
 def unsubscribe(request, pk):
     user = request.user
-    current_time = datetime.now()
     category = Category.objects.get(id=pk)
     category.subscriber.remove(user)
-    return render(request, 'news/unsubscribe.html', {'category': category, 'current_time': current_time})
+    return render(request, 'news/unsubscribe.html', {'category': category})
 
 
 # Вьюшки сериализаторов
