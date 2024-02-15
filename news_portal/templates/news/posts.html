@@ -9,10 +9,12 @@ All News
 
 
 {% block content %}
-    <h1>Новостная лента</h1>
-    {% if news %}
-        <p><i>Количество новостей/статей: <u>{{news|length}}</u></i></p>
-        <hr>
+    <div style="text-align: center;">
+        <h1>Новостная лента</h1>
+        {% if news %}
+            <p><i>Количество новостей/статей: <u>{{news|length}}</u></i></p>
+            <hr>
+    </div>
         {% for val in news %}
             <div style="text-align: left;">
                 <a href="{% url 'post_detail' val.id %}">{{ val.title|censor }}</a>

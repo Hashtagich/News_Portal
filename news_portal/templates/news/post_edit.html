@@ -6,13 +6,15 @@ Edit News
 
 
 {% block content %}
-    <h1>Редактирование новости/статьи</h1>
-    <hr>
+    <div style="text-align: center;">
+        <h1>Редактирование новости/статьи</h1>
+        <hr>
 
-    <form method="POST">
-        {% csrf_token %}
-        {{ form }}
-        <input type="submit" class="btn btn-success" value="Завершить редактирование">
-    </form>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" class="btn btn-success" value="Завершить редактирование">
+        </form>
+    </div>
 
 {% endblock content %}

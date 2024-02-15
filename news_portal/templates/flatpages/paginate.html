@@ -8,34 +8,31 @@
         {% load static %}
         {% load custom_tags %}
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
-        <style>
-            body {
-              background-color: {% if current_time.hour >= 19 or current_time.hour <= 8 %} black {% else %} white {% endif %};
-              color: {% if current_time.hour >= 19 or current_time.hour <= 7 %} white {% else %} black {% endif %};
-            }
-        </style>
+        {% include 'flatpages/current_time.html' %}
     </head>
 
     <body>
-    <!--Перелистывание страниц-->
-    {% if is_paginated %}
-        {% if page_obj.has_previous %}
-            <a href="?{% url_replace page=1 %}" class="btn btn-dark">First</a>
-            <a href="?{% url_replace page=page_obj.previous_page_number %}" class="btn btn-dark"><--</a>
-        {% endif %}
+        <div style="text-align: center;">
+            <!--Перелистывание страниц-->
+            {% if is_paginated %}
+                {% if page_obj.has_previous %}
+                    <a href="?{% url_replace page=1 %}" class="btn btn-dark">First</a>
+                    <a href="?{% url_replace page=page_obj.previous_page_number %}" class="btn btn-dark"><--</a>
+                {% endif %}
 
-        {% for num in page_obj.paginator.page_range %}
-            {% if page_obj.number == num %}
-                <button type="button" class="btn btn-light" disabled>{{ num }}</button>
-            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                <a href="?{% url_replace page=num %}" class="btn btn-dark">{{ num }}</a>
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <button type="button" class="btn btn-light" disabled>{{ num }}</button>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <a href="?{% url_replace page=num %}" class="btn btn-dark">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <a href="?{% url_replace page=page_obj.next_page_number %}" class="btn btn-dark">--></a>
+                    <a href="?{% url_replace page=page_obj.paginator.num_pages %}" class="btn btn-dark">Last</a>
+                {% endif %}
             {% endif %}
-        {% endfor %}
-
-        {% if page_obj.has_next %}
-            <a href="?{% url_replace page=page_obj.next_page_number %}" class="btn btn-dark">--></a>
-            <a href="?{% url_replace page=page_obj.paginator.num_pages %}" class="btn btn-dark">Last</a>
-        {% endif %}
-    {% endif %}
+        </div>
     </body>
 </html>

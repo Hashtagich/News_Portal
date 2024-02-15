@@ -57,7 +57,7 @@
 <!-- Page content-->
 <div class="container">
     <div class="row">
-        <div class="col-lg-12 text-center">
+        <div class="col-lg-12">
             {% block content %}
 
             {% endblock content %}
@@ -65,7 +65,9 @@
     </div>
 </div>
 
+{% include 'flatpages/back_to_top.html' %}
 {% include 'flatpages/footer.html' %}
+
 
 </body>
 </html>
