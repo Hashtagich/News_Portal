@@ -9,16 +9,18 @@ Search News
 
 
 {% block content %}
-    <h1>Новостная лента</h1>
-    {% if news %}
-        <p><i>Количество найденных новостей/статей: <u>{{filter.qs|length}}</u></i></p>
-        <hr>
+    <div style="text-align: center;">
+        <h1>Новостная лента</h1>
+        {% if news %}
+            <p><i>Количество найденных новостей/статей: <u>{{filter.qs|length}}</u></i></p>
+            <hr>
 
-        <form  method="GET">
-            {{ filter.form }}
-            <input type="submit" class="btn btn-outline-dark" value="Найти">
-        </form>
-        <hr>
+            <form  method="GET">
+                {{ filter.form }}
+                <input type="submit" class="btn btn-outline-dark" value="Найти">
+            </form>
+            <hr>
+    </div>
 
         {% for val in news %}
             <div style="text-align: left;">

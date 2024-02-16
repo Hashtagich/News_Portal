@@ -1,0 +1,9 @@
+{% load i18n %}
+{% load account %}
+{% load allauth %}
+{% user_display user as user_display %}
+{% element alert %}
+    {% slot message %}
+        {% blocktranslate %}Вы уже вошли в систему как {{ user_display }}.{% endblocktranslate %}
+    {% endslot %}
+{% endelement %}

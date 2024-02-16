@@ -1,17 +1,19 @@
 import django_filters
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.cache import cache
 from django.shortcuts import render
 from django.views.generic import ListView, UpdateView, CreateView, DetailView, DeleteView, TemplateView
-from django.contrib.auth.decorators import login_required
+from rest_framework import viewsets
+
 from .filters import PostFilter
 from .forms import PostForm
 from .models import Post, User, Category, Author
 from .serializers import CategorySerializer, PostSerializer, AuthorSerializer
-from rest_framework import viewsets
-from django.core.cache import cache
 
 
 # Create your views here.
+
 class PostsList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = Post
     ordering = '-datetime_post'
@@ -19,15 +21,6 @@ class PostsList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     context_object_name = 'news'
     paginate_by = 10
     permission_required = ('news.view_post',)
-
-    def get_queryset(self):
-        cache_key = 'post_list_cache'
-        cached_data = cache.get(cache_key)
-        if not cached_data:
-            queryset = super().get_queryset()
-            cache.set(cache_key, queryset)
-            return queryset
-        return cached_data
 
 
 class PostsSearchList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
