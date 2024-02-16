@@ -22,15 +22,6 @@ class PostsList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     paginate_by = 10
     permission_required = ('news.view_post',)
 
-    def get_queryset(self):
-        cache_key = 'post_list_cache'
-        cached_data = cache.get(cache_key)
-        if not cached_data:
-            queryset = super().get_queryset()
-            cache.set(cache_key, queryset)
-            return queryset
-        return cached_data
-
 
 class PostsSearchList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = Post
